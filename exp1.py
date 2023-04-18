@@ -12,9 +12,10 @@ url='https://baike.baidu.com/item/'
 #请求网页
 def req(url):
     # 发送HTTP GET请求并获取响应
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    num=re.findall(r'data-lemmaId="(.*?)"',response.text.encode('utf-8').decode("unicode_escape"),re.S)
+    res = requests.get(url)
+    print(res.text)
+    soup = BeautifulSoup(res.text, "html.parser")
+    num=re.findall(r'data-lemmaId="(.*?)"',res.text.encode('utf-8').decode("unicode_escape"),re.S)
     # print(num)
     t=-1
     if len(num):
