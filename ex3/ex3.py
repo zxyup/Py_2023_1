@@ -3,11 +3,14 @@ import cal_and_draw
 import get_rel
 from cal_and_draw import *
 name=input('请输入姓名:')
-sum=input('请输入核心人物数:')
+sum=int(input('请输入核心人物数:'))
 get(name,sum)
 cal_draw()
-predict=[cal_and_draw.sorted_items[i][0] for i in range(sum)]
 mreal=get_rel.real
+if sum>=len(mreal):
+    sum=len(mreal)-1
+print(cal_and_draw.sorted_items)
+predict=[cal_and_draw.sorted_items[i][0] for i in range(sum)]
 print('实际核心人物:',mreal)
 print('预测核心人物:',predict)
 tp=tn=fp=fn=0

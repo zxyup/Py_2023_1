@@ -36,7 +36,7 @@ def cal_draw():
 
     plt.figure(figsize=(15,8))
     pos = nx.spring_layout(G)
-    edge_labels = networkx.get_edge_attributes(G,'desc')
+    edge_labels = nx.get_edge_attributes(G,'desc')
     nx.draw(G, pos, with_labels=True,font_family='SimSun', node_size=1200)
     nx.draw_networkx_edge_labels(G, pos,font_family='SimSun', edge_labels=edge_labels)
     plt.savefig('rel.png')
