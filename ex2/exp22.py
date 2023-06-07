@@ -15,7 +15,7 @@ outloc=0
 file='1.txt'
 used_id=[]
 no=0
-with open("file1.csv", "w", encoding="utf-8", newline="") as f:
+with open("file2.csv", "w", encoding="utf-8", newline="") as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow(['序号','姓名','ID','简介','基本信息','人物关系','人物履历'])
 
@@ -41,7 +41,11 @@ def req(url,numm):
     headers = {
         'User-Agent':UserAgent().random
         }
-    res = requests.get(url,headers=headers)
+    if numm!=-1:
+        res = requests.get(url+'/'+str(numm),headers=headers)
+        # print(url+str(numm))
+    else:
+        res = requests.get(url,headers=headers)
     # print(res.text)
     soup = BeautifulSoup(res.text, "html.parser")
     if numm!=-1:
@@ -49,7 +53,8 @@ def req(url,numm):
         return res,soup,numm
     else:
         num=re.findall(r'data-lemmaId="(.*?)"',res.text.encode('utf-8').decode("unicode_escape"),re.S)
-        data.append(num[0])
+        if len(num):
+            data.append(num[0])
         t=-1
         if len(num):
             t=num[0]
@@ -149,25 +154,37 @@ def bdbk(no,name,numm=-1):
     data.append(name)
     urlt=url+name
     res,soup,num=req(urlt,numm)
+    if num==-1:
+        return None,None,None
     get1(soup)
     get2(soup)
     lists=get3(num,name)
     get4(res)
     # print(name,'Over!')
-    with open("file1.csv", "a", encoding="utf-8", newline="") as f:
+    flag=1
+    if len(data)<7:
+        flag=0
+        return lists,num,flag
+    with open("file2.csv", "a", encoding="utf-8", newline="") as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow(data)
         f.close()
-    return lists,num
+    return lists,num,flag
 
 def dfs(name,num=-1):
     global no
     if num in used_id:
         return 
     no+=1
-    lists,realn=bdbk(no,name,num)
-    print('第',str(no),'个:',name,'completed!')
-    used_id.append(int(realn))
+    lists,realn,flag=bdbk(no,name,num)
+    if flag:
+        print('第',str(no),'个:',name,'completed!')
+        used_id.append(int(realn))
+    else:
+        print('第',str(no),'个:',name,'failed!')
+        no-=1
+        time.sleep(10)
+        return
     if len(lists)==0:
         return
     for list in lists:
