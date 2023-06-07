@@ -2,10 +2,8 @@ from get_rel import *
 import cal_and_draw
 import get_rel
 from cal_and_draw import *
-# name=input('请输入姓名:')
-# sum=input('请输入核心人物数:')
-name='蔡徐坤'
-sum=6
+name=input('请输入姓名:')
+sum=input('请输入核心人物数:')
 get(name,sum)
 cal_draw()
 predict=[cal_and_draw.sorted_items[i][0] for i in range(sum)]
